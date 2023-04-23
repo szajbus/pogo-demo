@@ -43,7 +43,9 @@ defmodule PogoDashboard.MixProject do
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:local_cluster, "~> 1.2.1"},
+      {:test_app, path: "test_app"}
     ]
   end
 
