@@ -1,0 +1,103 @@
+<div class="min-h-full mx-auto max-full px-4 py-4">
+  <div class="flex items-stretch justify-between mb-8">
+    <div class="w-1/2 mr-2 p-4 rounded bg-slate-100">
+      <h3 class="mb-2 font-bold">
+        Start new nodes
+      </h3>
+      <form phx-submit="start_nodes" class="text-sm">
+        <label for="amount" class="block mt-3 my-1">
+          Number of nodes
+        </label>
+        <input type="number" name="amount" value="1" class="h-8 mr-2" />
+
+        <label for="sync_interval" class="block mt-3 mb-1">
+          Sync interval (in milliseconds)
+        </label>
+        <input type="number" name="sync_interval" value="1000" class="h-8 mr-2" />
+
+        <button class="block mt-3 mb-1 py-1 px-2 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm">
+          Start nodes
+        </button>
+      </form>
+    </div>
+
+    <div class="w-1/2 ml-2 p-4 rounded bg-slate-100">
+      <h3 class="mb-2 font-bold">
+        Start new workers
+      </h3>
+      <form phx-submit="start_workers" class="text-sm">
+        <label for="amount" class="block mt-3 my-1">
+          Number of workers
+        </label>
+        <input type="number" name="amount" value="1" class="h-8 mr-2" />
+
+        <button class="block mt-3 mb-1 py-1 px-2 rounded bg-blue-500 hover:bg-blue-700 text-white text-sm">
+          Start workers
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="flex flex-wrap justify-start items-stretch mb-8">
+    <%= for {supervisor, children} <- @supervisors do %>
+      <div class="basis-1/3 my-2">
+        <div class="h-full m-2 p-4 rounded bg-slate-100">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="font-bold">
+              <%= format_node(supervisor) %>
+            </h2>
+            <button
+              phx-click="stop_node"
+              phx-value-node={format_node(supervisor)}
+              class="rounded px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white text-xs"
+            >
+              Stop
+            </button>
+          </div>
+          <%= for %Child{id: {_, idx}} = child <- children do %>
+            <div class="flex justify-between items-center">
+              <div class="flex my-1 text-xs">
+                <span class="inline-block w-32 px-2 py-1 text-center font-mono bg-slate-200">
+                  <%= inspect(child.id) %>
+                </span>
+                <%= if child.spec do %>
+                  <span class="inline-block px-2 py-1 text-center font-bold bg-blue-200">
+                    spec
+                  </span>
+                <% end %>
+                <%= if child.pid do %>
+                  <span class="inline-block px-2 py-1 text-center font-bold bg-green-200">
+                    pid
+                  </span>
+                <% end %>
+                <%= if child.start_child do %>
+                  <span class="inline-block px-2 py-1 text-center font-bold bg-yellow-200">
+                    start child
+                  </span>
+                <% end %>
+                <%= if child.terminate_child do %>
+                  <span class="inline-block px-2 py-1 text-center font-bold bg-red-200">
+                    terminate child
+                  </span>
+                <% end %>
+                <%= if child.terminating do %>
+                  <span class="inline-block px-2 py-1 text-center font-bold bg-red-400">
+                    terminating
+                  </span>
+                <% end %>
+              </div>
+              <button
+                phx-click="terminate_worker"
+                phx-value-id={idx}
+                phx-value-node={format_node(supervisor)}
+                class="rounded px-2 py-1 bg-blue-500 hover:bg-blue-700 text-white text-xs"
+              >
+                Stop
+              </button>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -9,21 +9,6 @@ defmodule PogoDashboard.Application do
   def start(_type, _args) do
     :ok = LocalCluster.start()
 
-    nodes =
-      LocalCluster.start_nodes("test-app-", 3, applications: [:test_app], files: ["lib/worker.ex"])
-
-    for node <- nodes do
-      {:ok, _pid} = :rpc.call(node, TestApp, :start_pogo, [])
-    end
-
-    for i <- 1..20 do
-      child_spec = Worker.child_spec(i)
-
-      nodes
-      |> Enum.random()
-      |> :rpc.call(TestApp, :start_child, [child_spec])
-    end
-
     children = [
       # Start the Telemetry supervisor
       PogoDashboardWeb.Telemetry,
@@ -33,7 +18,8 @@ defmodule PogoDashboard.Application do
       PogoDashboardWeb.Endpoint,
       # Start a worker by calling: PogoDashboard.Worker.start_link(arg)
       # {PogoDashboard.Worker, arg},
-      %{id: {:pg, :test}, start: {:pg, :start_link, [:test]}}
+      %{id: {:pg, :test}, start: {:pg, :start_link, [:test]}},
+      PogoDashboard.Manager
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
