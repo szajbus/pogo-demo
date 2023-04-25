@@ -1,5 +1,5 @@
-defmodule PogoDashboardWeb.PageControllerTest do
-  use PogoDashboardWeb.ConnCase
+defmodule PogoDemoWeb.PageControllerTest do
+  use PogoDemoWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, ~p"/")

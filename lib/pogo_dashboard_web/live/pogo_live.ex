@@ -1,7 +1,7 @@
-defmodule PogoDashboardWeb.PogoLive do
-  use PogoDashboardWeb, :live_view
+defmodule PogoDemoWeb.PogoLive do
+  use PogoDemoWeb, :live_view
 
-  alias PogoDashboard.Manager
+  alias PogoDemo.Manager
 
   defmodule Child do
     defstruct [:id, :start_child, :terminate_child, :spec, :supervisor, :pid, :terminating]

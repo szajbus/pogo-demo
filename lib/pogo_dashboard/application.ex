@@ -1,4 +1,4 @@
-defmodule PogoDashboard.Application do
+defmodule PogoDemo.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -11,20 +11,20 @@ defmodule PogoDashboard.Application do
 
     children = [
       # Start the Telemetry supervisor
-      PogoDashboardWeb.Telemetry,
+      PogoDemoWeb.Telemetry,
       # Start the PubSub system
-      {Phoenix.PubSub, name: PogoDashboard.PubSub},
+      {Phoenix.PubSub, name: PogoDemo.PubSub},
       # Start the Endpoint (http/https)
-      PogoDashboardWeb.Endpoint,
-      # Start a worker by calling: PogoDashboard.Worker.start_link(arg)
-      # {PogoDashboard.Worker, arg},
+      PogoDemoWeb.Endpoint,
+      # Start a worker by calling: PogoDemo.Worker.start_link(arg)
+      # {PogoDemo.Worker, arg},
       %{id: {:pg, :test}, start: {:pg, :start_link, [:test]}},
-      PogoDashboard.Manager
+      PogoDemo.Manager
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: PogoDashboard.Supervisor]
+    opts = [strategy: :one_for_one, name: PogoDemo.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -32,7 +32,7 @@ defmodule PogoDashboard.Application do
   # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
-    PogoDashboardWeb.Endpoint.config_change(changed, removed)
+    PogoDemoWeb.Endpoint.config_change(changed, removed)
     :ok
   end
 end

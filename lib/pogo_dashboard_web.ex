@@ -1,12 +1,12 @@
-defmodule PogoDashboardWeb do
+defmodule PogoDemoWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, components, channels, and so on.
 
   This can be used in your application as:
 
-      use PogoDashboardWeb, :controller
-      use PogoDashboardWeb, :html
+      use PogoDemoWeb, :controller
+      use PogoDemoWeb, :html
 
   The definitions below will be executed for every controller,
   component, etc, so keep them short and clean, focused
@@ -40,7 +40,7 @@ defmodule PogoDashboardWeb do
     quote do
       use Phoenix.Controller,
         formats: [:html, :json],
-        layouts: [html: PogoDashboardWeb.Layouts]
+        layouts: [html: PogoDemoWeb.Layouts]
 
       import Plug.Conn
 
@@ -51,7 +51,7 @@ defmodule PogoDashboardWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {PogoDashboardWeb.Layouts, :app}
+        layout: {PogoDemoWeb.Layouts, :app}
 
       unquote(html_helpers())
     end
@@ -83,7 +83,7 @@ defmodule PogoDashboardWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
-      import PogoDashboardWeb.CoreComponents
+      import PogoDemoWeb.CoreComponents
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
@@ -96,9 +96,9 @@ defmodule PogoDashboardWeb do
   def verified_routes do
     quote do
       use Phoenix.VerifiedRoutes,
-        endpoint: PogoDashboardWeb.Endpoint,
-        router: PogoDashboardWeb.Router,
-        statics: PogoDashboardWeb.static_paths()
+        endpoint: PogoDemoWeb.Endpoint,
+        router: PogoDemoWeb.Router,
+        statics: PogoDemoWeb.static_paths()
     end
   end
 

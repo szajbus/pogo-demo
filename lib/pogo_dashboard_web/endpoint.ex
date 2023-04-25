@@ -1,12 +1,12 @@
-defmodule PogoDashboardWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :pogo_dashboard
+defmodule PogoDemoWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :pogo_demo
 
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_pogo_dashboard_key",
+    key: "_pogo_demo_key",
     signing_salt: "M6g606By",
     same_site: "Lax"
   ]
@@ -19,9 +19,9 @@ defmodule PogoDashboardWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :pogo_dashboard,
+    from: :pogo_demo,
     gzip: false,
-    only: PogoDashboardWeb.static_paths()
+    only: PogoDemoWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -42,5 +42,5 @@ defmodule PogoDashboardWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug PogoDashboardWeb.Router
+  plug PogoDemoWeb.Router
 end

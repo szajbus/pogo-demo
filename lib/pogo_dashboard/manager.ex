@@ -1,4 +1,4 @@
-defmodule PogoDashboard.Manager do
+defmodule PogoDemo.Manager do
   @moduledoc false
 
   use GenServer

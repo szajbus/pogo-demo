@@ -8,13 +8,13 @@
 import Config
 
 # Configures the endpoint
-config :pogo_dashboard, PogoDashboardWeb.Endpoint,
+config :pogo_demo, PogoDemoWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [
-    formats: [html: PogoDashboardWeb.ErrorHTML, json: PogoDashboardWeb.ErrorJSON],
+    formats: [html: PogoDemoWeb.ErrorHTML, json: PogoDemoWeb.ErrorJSON],
     layout: false
   ],
-  pubsub_server: PogoDashboard.PubSub,
+  pubsub_server: PogoDemo.PubSub,
   live_view: [signing_salt: "t7g111Gn"]
 
 # Configure esbuild (the version is required)

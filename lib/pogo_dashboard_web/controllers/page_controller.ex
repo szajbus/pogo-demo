@@ -1,5 +1,5 @@
-defmodule PogoDashboardWeb.PageController do
-  use PogoDashboardWeb, :controller
+defmodule PogoDemoWeb.PageController do
+  use PogoDemoWeb, :controller
 
   def home(conn, _params) do
     # The home page is often custom made,

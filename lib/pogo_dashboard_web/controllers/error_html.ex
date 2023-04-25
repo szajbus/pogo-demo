@@ -1,12 +1,12 @@
-defmodule PogoDashboardWeb.ErrorHTML do
-  use PogoDashboardWeb, :html
+defmodule PogoDemoWeb.ErrorHTML do
+  use PogoDemoWeb, :html
 
   # If you want to customize your error pages,
   # uncomment the embed_templates/1 call below
   # and add pages to the error directory:
   #
-  #   * lib/pogo_dashboard_web/controllers/error_html/404.html.heex
-  #   * lib/pogo_dashboard_web/controllers/error_html/500.html.heex
+  #   * lib/pogo_demo_web/controllers/error_html/404.html.heex
+  #   * lib/pogo_demo_web/controllers/error_html/500.html.heex
   #
   # embed_templates "error_html/*"
 

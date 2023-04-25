@@ -1,11 +1,11 @@
-defmodule PogoDashboardWeb.Router do
-  use PogoDashboardWeb, :router
+defmodule PogoDemoWeb.Router do
+  use PogoDemoWeb, :router
 
   pipeline :browser do
     plug(:accepts, ["html"])
     plug(:fetch_session)
     plug(:fetch_live_flash)
-    plug(:put_root_layout, {PogoDashboardWeb.Layouts, :root})
+    plug(:put_root_layout, {PogoDemoWeb.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
   end
@@ -14,14 +14,14 @@ defmodule PogoDashboardWeb.Router do
     plug(:accepts, ["json"])
   end
 
-  scope "/", PogoDashboardWeb do
+  scope "/", PogoDemoWeb do
     pipe_through(:browser)
 
     live("/", PogoLive, :index)
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", PogoDashboardWeb do
+  # scope "/api", PogoDemoWeb do
   #   pipe_through :api
   # end
 end

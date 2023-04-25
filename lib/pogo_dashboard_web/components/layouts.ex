@@ -1,5 +1,5 @@
-defmodule PogoDashboardWeb.Layouts do
-  use PogoDashboardWeb, :html
+defmodule PogoDemoWeb.Layouts do
+  use PogoDemoWeb, :html
 
   embed_templates "layouts/*"
 end

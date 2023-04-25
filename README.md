@@ -1,4 +1,4 @@
-# PogoDashboard
+# PogoDemo
 
 To start your Phoenix server:
 

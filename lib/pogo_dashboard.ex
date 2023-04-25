@@ -1,3 +1,3 @@
-defmodule PogoDashboard do
+defmodule PogoDemo do
   @moduledoc false
 end
