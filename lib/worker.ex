@@ -5,7 +5,7 @@ defmodule Worker do
 
   def child_spec(id) do
     %{
-      id: {__MODULE__, id},
+      id: id,
       start: {__MODULE__, :start_link, [id]}
     }
   end

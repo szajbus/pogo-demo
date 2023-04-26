@@ -20,8 +20,16 @@ defmodule PogoDemo.Manager do
     GenServer.cast(__MODULE__, {:stop_node, node})
   end
 
+  def sync_node(node) do
+    GenServer.cast(__MODULE__, {:sync_node, node})
+  end
+
   def start_workers(n) do
     GenServer.cast(__MODULE__, {:start_workers, n})
+  end
+
+  def start_worker(node, id) do
+    GenServer.cast(__MODULE__, {:start_worker, node, id})
   end
 
   def terminate_worker(node, id) do
@@ -34,8 +42,6 @@ defmodule PogoDemo.Manager do
 
     nodes =
       LocalCluster.start_nodes(prefix, n, applications: [:test_app], files: ["lib/worker.ex"])
-
-    nodes |> IO.inspect()
 
     opts = [name: TestApp.DistributedSupervisor, scope: :test, sync_interval: sync_interval]
 
@@ -57,10 +63,17 @@ defmodule PogoDemo.Manager do
     {:noreply, state}
   end
 
+  def handle_cast({:sync_node, node}, state) do
+    :rpc.call(node, Kernel, :send, [TestApp.DistributedSupervisor, :sync])
+    {:noreply, state}
+  end
+
   def handle_cast({:start_workers, n}, {node_idx, worker_idx}) do
     for idx <- worker_idx..(worker_idx + n - 1) do
+      idx = String.pad_leading("#{idx}", 3, "0")
+
       node = Node.list() |> Enum.random()
-      child_spec = Worker.child_spec(idx)
+      child_spec = Worker.child_spec("{Worker, #{idx}}")
 
       :rpc.call(
         node,
@@ -71,6 +84,19 @@ defmodule PogoDemo.Manager do
     end
 
     {:noreply, {node_idx, worker_idx + n}}
+  end
+
+  def handle_cast({:start_worker, node, id}, state) do
+    child_spec = Worker.child_spec(id)
+
+    :rpc.call(
+      node,
+      Pogo.DynamicSupervisor,
+      :start_child,
+      [TestApp.DistributedSupervisor, child_spec]
+    )
+
+    {:noreply, state}
   end
 
   def handle_cast({:terminate_worker, node, id}, state) do

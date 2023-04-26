@@ -49,16 +49,27 @@ defmodule PogoDemoWeb.PogoLive do
     {:noreply, socket}
   end
 
+  def handle_event("sync_node", %{"node" => node}, socket) do
+    node = String.to_atom(node)
+    Manager.sync_node(node)
+    {:noreply, socket}
+  end
+
   def handle_event("start_workers", %{"amount" => amount}, socket) do
     amount = String.to_integer(amount)
     Manager.start_workers(amount)
     {:noreply, socket}
   end
 
-  def handle_event("terminate_worker", %{"id" => id, "node" => node}, socket) do
-    id = String.to_integer(id)
+  def handle_event("start_worker", %{"node" => node, "id" => id}, socket) do
     node = String.to_atom(node)
-    Manager.terminate_worker(node, {Worker, id})
+    Manager.start_worker(node, id)
+    {:noreply, socket}
+  end
+
+  def handle_event("terminate_worker", %{"id" => id, "node" => node}, socket) do
+    node = String.to_atom(node)
+    Manager.terminate_worker(node, id)
     {:noreply, socket}
   end
 
@@ -66,30 +77,34 @@ defmodule PogoDemoWeb.PogoLive do
     children =
       @scope
       |> :pg.which_groups()
-      |> Enum.reduce(%{}, fn {key, value} = group, children ->
-        id =
-          case value do
-            %{id: id} -> id
-            id -> id
-          end
+      |> Enum.reduce(%{}, fn
+        {:member, node}, children ->
+          Map.put_new(children, node, %{})
 
-        nodes =
-          @scope
-          |> :pg.get_members(group)
-          |> Enum.map(&node/1)
+        {key, value} = group, children ->
+          id =
+            case value do
+              %{id: id} -> id
+              id -> id
+            end
 
-        nodes
-        |> Enum.reduce(children, fn node, children ->
-          child = struct(Child, [{:id, id}, {key, value}])
+          nodes =
+            @scope
+            |> :pg.get_members(group)
+            |> Enum.map(&node/1)
 
-          update_in(children, [node], fn
-            nil ->
-              %{id => child}
+          nodes
+          |> Enum.reduce(children, fn node, children ->
+            child = struct(Child, [{:id, id}, {key, value}])
 
-            children ->
-              Map.update(children, id, child, &Map.put(&1, key, value))
+            update_in(children, [node], fn
+              nil ->
+                %{id => child}
+
+              children ->
+                Map.update(children, id, child, &Map.put(&1, key, value))
+            end)
           end)
-        end)
       end)
 
     children =
