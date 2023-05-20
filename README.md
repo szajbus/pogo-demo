@@ -2,6 +2,8 @@
 
 Demo of [pogo](https://github.com/team-telnyx/pogo) library, a distributed supervisor for Elixir.
 
+![Pogo Demo](screenshot.png)
+
 To start:
 
   * Run `mix setup` to install and setup dependencies
